@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd"/>
 	<xs:complexType name="componentInfoType">
@@ -10,13 +10,18 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="resourceType" type="xs:string" fixed="component">
+			<xs:element name="resourceType" fixed="component">
 				<xs:annotation>
-					<xs:documentation/>
+					<xs:documentation>Specifies the type of the resource being described</xs:documentation>
 					<xs:appinfo>
 						<label>Resource type</label>
 					</xs:appinfo>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="component"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element ref="ms:identificationInfo"/>
 			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
@@ -50,7 +55,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that reads content of various types (pdf, txt, xml etc.)</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>accessTool</xs:broader>
+												<xs:broader>accessComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -58,7 +63,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that writes processing results in various formats</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>accessTool</xs:broader>
+												<xs:broader>accessComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -74,7 +79,7 @@
 										<xs:annotation>
 											<xs:documentation>A component or interface that renders the contents of a resource in a graphic way for visualisation purposes</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -82,7 +87,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that helps in the debugging process</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -90,7 +95,7 @@
 										<xs:annotation>
 											<xs:documentation>A component used to confirm that a system/resource meets the specifications and fulfills its intended purpose</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -98,7 +103,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that provides access to the contents of a resource but intended only for access by humans</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -122,7 +127,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that allows humans to edit the contents of a resource</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -130,7 +135,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that is used in training models for machine learning</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -138,7 +143,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that is used in predicting based on machine learning models</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -146,7 +151,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that is used for extracting features</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -154,7 +159,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that performs data splitting for cross validation purposes</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -162,7 +167,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that supports data merging from various sources</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -170,7 +175,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that performs conversion between formats of a resource</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -178,7 +183,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that is used in the evaluation of the performance of a component</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -186,7 +191,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that supports controlling flows</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -194,7 +199,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that performs analysis tasks based on a script</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -202,7 +207,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that allows matching (mapping) of elements</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -218,7 +223,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that supports crowd sourcing operations</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -226,7 +231,7 @@
 										<xs:annotation>
 											<xs:documentation>A component that collects (retrieves) data from various sources</xs:documentation>
 											<xs:appinfo>
-												<xs:broader>supportTool</xs:broader>
+												<xs:broader>supportComponent</xs:broader>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
@@ -571,10 +576,18 @@ words) in two languages</xs:documentation>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="application" type="xs:boolean" minOccurs="0"/>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element ref="ms:componentDistributionInfo" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="parameterInfos" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:parameterInfo" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -619,26 +632,7 @@ words) in two languages</xs:documentation>
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
-						<xs:element name="requiresHardware" minOccurs="0" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Hardware required for running a s/w component and/or computational grammar</xs:documentation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-									<label>Requires hardware</label>
-								</xs:appinfo>
-							</xs:annotation>
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="100"/>
-									<xs:enumeration value="graphicCard"/>
-									<xs:enumeration value="microphone"/>
-									<xs:enumeration value="ocrSystem"/>
-									<xs:enumeration value="specialHardwareEquipment"/>
-									<xs:enumeration value="none"/>
-									<xs:enumeration value="other"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:element>
+						<xs:element ref="ms:requiresHardware" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -660,18 +654,54 @@ words) in two languages</xs:documentation>
 			<xs:element ref="ms:componentDocumentationInfo" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="processingResourceInfoType">
+	<xs:complexType name="parameterInfoType">
 		<xs:sequence>
-			<xs:element name="resourceTypes">
+			<xs:element name="parameterName" type="xs:string"/>
+			<xs:element name="descriptions" minOccurs="1" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="resourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="description" minOccurs="1" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Provides the description of the resource in prose; the element can be repeated for the different language versions using the "lang" attribute to specify the language.</xs:documentation>
+								<xs:appinfo>
+									<label>Description</label>
+									<exactMatch>dct:description</exactMatch>
+									<closeMatch>http://hdl.handle.net/11459/CCR_C-2520_9eeedfb4-47d3-ddee-cfcb-99ac634bf1db (ccr:descriptionContext)</closeMatch>
+								</xs:appinfo>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:restriction base="ms:myString">
+										<xs:maxLength value="10000"/>
+									</xs:restriction>
+								</xs:simpleContent>
+							</xs:complexType>
+							<xs:unique name="uniqueLang30">
+								<xs:selector xpath="."/>
+								<xs:field xpath="@lang"/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="parameterType" type="xs:string"/>
+			<xs:element name="mandatory" type="xs:boolean" default="true"/>
+			<xs:element name="defaultValue" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="multiValue" type="xs:boolean" default="false"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="processingResourceInfoType">
+		<xs:sequence>
+			<xs:element name="processingResourceTypes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="processingResourceType" maxOccurs="unbounded">
 							<xs:annotation>
 								<xs:documentation>The type of the resource that a component takes as input or produces as output</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
 									<relation>one-to-many</relation>
-									<label>Resource type</label>
+									<label>Processing resource type</label>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
@@ -970,6 +1000,7 @@ words) in two languages</xs:documentation>
 					<xs:restriction base="xs:string">
 						<xs:enumeration value="UIMA"/>
 						<xs:enumeration value="GATE"/>
+						<xs:enumeration value="AlvisNLP"/>
 						<xs:enumeration value="other"/>
 					</xs:restriction>
 				</xs:simpleType>
@@ -1054,6 +1085,14 @@ words) in two languages</xs:documentation>
 			<xs:documentation>Groups together all information related to software components</xs:documentation>
 			<xs:appinfo>
 				<label>Component</label>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="parameterInfo" type="ms:parameterInfoType">
+		<xs:annotation>
+			<xs:documentation>Groups together information on each parameter of a component</xs:documentation>
+			<xs:appinfo>
+				<label>Parameter</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
