@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
+	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
+	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd"/>
 	<!-- definition of global simple types -->
 	<xs:simpleType name="httpURI">
 		<xs:annotation>
@@ -151,7 +152,14 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="other"/>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>Value for classificationSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+					<xs:appinfo>
+						<label>Other</label>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="conformanceToStandardsBestPractices">
@@ -232,7 +240,13 @@
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
-				<xs:attribute name="lang" type="xs:language"/>
+				<xs:attribute name="lang" type="xs:language" default="en">
+					<xs:annotation>
+						<xs:appinfo>
+							<change>false</change>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -313,9 +327,10 @@
 		<xs:sequence>
 			<xs:element name="languageTag">
 				<xs:annotation>
-					<xs:documentation>The identifier of the language that is included in the resource or supported by the tool/service, according to the IETF BCP47 guidelines; NOTE in the XSD there is no validation as to the validity of the id, but the system validates the input metadata and the editor produces the correct id on the basis of the subelements (language, script, region and variant)</xs:documentation>
+					<xs:documentation>The identifier of the language that is included in the resource or supported by the component, according to the IETF BCP47 guidelines</xs:documentation>
 					<xs:appinfo>
 						<label>Language</label>
+						<usage>in the XSD there is no validation as to the validity of the id, but the system validates the input metadata and the editor produces the correct id on the basis of the subelements (language, script, region and variant)</usage>
 						<sameAs>dct:language</sameAs>
 					</xs:appinfo>
 				</xs:annotation>
@@ -369,17 +384,60 @@
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="metadataIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the metadata record identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:appinfo>
+							<label>Metadata identifier scheme name</label>
+							<label-plural>Metadata identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="hdl"/>
-							<xs:enumeration value="purl"/>
-							<xs:enumeration value="url"/>
-							<xs:enumeration value="urn"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="Handle">
+								<xs:annotation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:appinfo>
+										<label>Handle identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PURL">
+								<xs:annotation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:appinfo>
+										<label>PURL (Persistent URL)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URL">
+								<xs:annotation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:appinfo>
+										<label>URL (Uniform Resource Locator)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URN">
+								<xs:annotation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:appinfo>
+										<label>URN (Uniform Resource Name)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -390,67 +448,413 @@
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="resourceIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the resource identifier is assigned by the authority that issues it (e.g. DOI, ISLRN etc.)</xs:documentation>
+						<xs:appinfo>
+							<label>Resource identifier scheme name</label>
+							<label-plural>Resource identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+							<default_components>maven</default_components>
+							<change>true</change>
+							<commentForSource>values taken mostly from DataCite with additions from OpenAIRE previous scheme and new values for components and language resources</commentForSource>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="doi"/>
-							<xs:enumeration value="islrn"/>
-							<xs:enumeration value="hdl"/>
-							<xs:enumeration value="ark"/>
-							<xs:enumeration value="arXiv"/>
-							<xs:enumeration value="bibcode"/>
-							<xs:enumeration value="ean13"/>
-							<xs:enumeration value="eissn"/>
-							<xs:enumeration value="isbn"/>
-							<xs:enumeration value="issn"/>
-							<xs:enumeration value="istc"/>
-							<xs:enumeration value="lissn"/>
-							<xs:enumeration value="lsid"/>
-							<xs:enumeration value="purl"/>
-							<xs:enumeration value="upc"/>
-							<xs:enumeration value="url"/>
-							<xs:enumeration value="urn"/>
-							<xs:enumeration value="fct"/>
-							<xs:enumeration value="oai"/>
-							<xs:enumeration value="pmc"/>
-							<xs:enumeration value="pmid"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="DOI">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>DOI (Digital Object Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISLRN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to ISLRN (International Standard Language Resource Number, http://www.islrn.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISLRN (International Standard Language Resource Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Handle">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:appinfo>
+										<label>Handle identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ARK">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
+									<xs:appinfo>
+										<label>ARK (Archival Resource Key)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="arXiv">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>arXiv identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="bibcode">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
+									<xs:appinfo>
+										<label>bibcode</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="EAN13">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to EAN (International Article Number, also known as European Article Number) and more specifically to the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
+									<xs:appinfo>
+										<label>EAN 13 (European Article Number 13 standard)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="EISSN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
+									<xs:appinfo>
+										<label>e-ISSN</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISBN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
+									<xs:appinfo>
+										<label>ISBN (International Standard Book Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISSN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISSN (International Standard Serial Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISTC">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISTC (International Standard Text Code)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="LISSN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the linking ISSN or ISSN-L</xs:documentation>
+									<xs:appinfo>
+										<label>LISSN (ISSN-L)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="LSID">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
+									<xs:appinfo>
+										<label>LSID (Life Sciences Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PURL">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:appinfo>
+										<label>PURL (Persistent URL)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="UPC">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
+									<xs:appinfo>
+										<label>UPC (Universal Product Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URL">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:appinfo>
+										<label>URL (Uniform Resource Locator)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URN">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:appinfo>
+										<label>URN (Uniform Resource Name)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OAI">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:appinfo>
+										<label>OAI identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PMCID">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:appinfo>
+										<label>PMCID (PubMed Central Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PMID">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:appinfo>
+										<label>PMID (PubMed Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="maven">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Maven coordinates (cf. Maven POM, https://maven.apache.org/pom.html#Maven_Coordinates)</xs:documentation>
+									<xs:appinfo>
+										<label>Maven id</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="docker">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Docker (https://hub.docker.com/help/)</xs:documentation>
+									<xs:appinfo>
+										<label>Docker id</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for resourceSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<!--
+							<xs:enumeration value="fct">
+								<xs:annotation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the FCT (Fundação para a Ciência e Tecnologia – the Portuguese Foundation for Science and Technology)</xs:documentation>
+									<xs:appinfo>
+										<label>FCT</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+-->
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
 	<xs:complexType name="publicationIdentifierType">
 		<xs:annotation>
 			<xs:documentation>Base type for identifier schemes for publications</xs:documentation>
+			<xs:appinfo>
+				<commentForSource>values taken mostly from DataCite with additions from OpenAIRE previous scheme</commentForSource>
+			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="publicationIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the publication identifier is assigned by the authority that issues it (e.g. DOI, PubMed Central etc.)</xs:documentation>
+						<xs:appinfo>
+							<label>Publication identifier scheme name</label>
+							<label-plural>Publication identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+							<default>DOI</default>
+							<change>true</change>
+							<commentForSource>values taken mostly from DataCite with additions from OpenAIRE previous scheme</commentForSource>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="doi"/>
-							<xs:enumeration value="hdl"/>
-							<xs:enumeration value="ark"/>
-							<xs:enumeration value="arXiv"/>
-							<xs:enumeration value="bibcode"/>
-							<xs:enumeration value="ean13"/>
-							<xs:enumeration value="eissn"/>
-							<xs:enumeration value="isbn"/>
-							<xs:enumeration value="issn"/>
-							<xs:enumeration value="istc"/>
-							<xs:enumeration value="lissn"/>
-							<xs:enumeration value="lsid"/>
-							<xs:enumeration value="purl"/>
-							<xs:enumeration value="upc"/>
-							<xs:enumeration value="url"/>
-							<xs:enumeration value="urn"/>
-							<xs:enumeration value="fct"/>
-							<xs:enumeration value="oai"/>
-							<xs:enumeration value="pmc"/>
-							<xs:enumeration value="pmid"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="DOI">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>DOI (Digital Object Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Handle">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:appinfo>
+										<label>Handle identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ARK">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
+									<xs:appinfo>
+										<label>ARK (Archival Resource Key)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="arXiv">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>arXiv identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="bibcode">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
+									<xs:appinfo>
+										<label>bibcode</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="EAN13">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to EAN (International Article Number, also known as European Article Number) and more specifically to the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
+									<xs:appinfo>
+										<label>EAN 13 (European Article Number 13 standard)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="EISSN">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
+									<xs:appinfo>
+										<label>e-ISSN</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISBN">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
+									<xs:appinfo>
+										<label>ISBN (International Standard Book Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISSN">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISSN (International Standard Serial Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISTC">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISTC (International Standard Text Code)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="LISSN">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the linking ISSN or ISSN-L</xs:documentation>
+									<xs:appinfo>
+										<label>LISSN (ISSN-L)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="LSID">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
+									<xs:appinfo>
+										<label>LSID (Life Sciences Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PURL">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:appinfo>
+										<label>PURL (Persistent URL)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="UPC">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
+									<xs:appinfo>
+										<label>UPC (Universal Product Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URL">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:appinfo>
+										<label>URL (Uniform Resource Locator)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URN">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:appinfo>
+										<label>URN (Uniform Resource Name)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OAI">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:appinfo>
+										<label>OAI identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PMCID">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:appinfo>
+										<label>PMCID (PubMed Central Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="PMID">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:appinfo>
+										<label>PMID (PubMed Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for resourceSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<!--
+							<xs:enumeration value="fct">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the FCT (Fundação para a Ciência e Tecnologia – the Portuguese Foundation for Science and Technology)</xs:documentation>
+									<xs:appinfo>
+										<label>FCT</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+-->
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
@@ -465,16 +869,55 @@
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="journalIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the journal identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:appinfo>
+							<label>Journal identifier scheme name</label>
+							<label-plural>Journal identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+							<default>DOI</default>
+							<change>true</change>
+							<commentForSource>values taken mostly from DataCite with additions from OpenAIRE previous scheme</commentForSource>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="doi"/>
-							<xs:enumeration value="hdl"/>
-							<xs:enumeration value="issn"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="DOI">
+								<xs:annotation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>DOI (Digital Object Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Handle">
+								<xs:annotation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:appinfo>
+										<label>Handle identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISSN">
+								<xs:annotation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISSN (International Standard Serial Number)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for journalIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -487,58 +930,197 @@
 				<xs:attribute name="repositoryIdentifierSchemeName" use="required">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="doi"/>
-							<xs:enumeration value="hdl"/>
-							<xs:enumeration value="url"/>
-							<xs:enumeration value="oai"/>
-							<xs:enumeration value="opendoar"/>
-							<xs:enumeration value="re3d"/>
-							<xs:enumeration value="roar"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="DOI">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>DOI (Digital Object Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Handle">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:appinfo>
+										<label>Handle identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="URL">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:appinfo>
+										<label>URL (Uniform Resource Locator)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OAI">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:appinfo>
+										<label>OAI identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OpenDOAR">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the OpenDOAR identifier (Directory of Open Access Repositories, http://www.opendoar.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>OpenDOAR</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="re3data">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the re3data identifier (Registry of Research Data Repositories, http://www.re3data.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>re3data</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ROAR">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the ROAR identifier (Registry of Open Access Repositories, http://roar.eprints.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ROAR</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
 	<xs:complexType name="personIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Base type for identifier schemes for persons</xs:documentation>
+			<xs:documentation>Base type for identifiers for persons</xs:documentation>
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="personIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the person identifier is assigned by the authority that issues it (e.g. ORCID, ScopusId, ResearcherID etc.)</xs:documentation>
+						<xs:appinfo>
+							<label>Person identifier scheme name</label>
+							<label-plural>Person identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+							<default>orcid</default>
+							<change>true</change>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="orcid"/>
-							<xs:enumeration value="isni"/>
-							<xs:enumeration value="researcherId"/>
-							<xs:enumeration value="scopusId"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="ORCID">
+								<xs:annotation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ORCID identifier for researchers (https://orcid.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ORCID</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ISNI">
+								<xs:annotation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISNI (International Standard Name Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="researcherId">
+								<xs:annotation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ResearcherID identifier for researchers (http://www.researcherid.com/)</xs:documentation>
+									<xs:appinfo>
+										<label>ResearcherID</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="scopusId">
+								<xs:annotation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the Scopus identifier for authors (https://www.scopus.com)</xs:documentation>
+									<xs:appinfo>
+										<label>ScopusID</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for personIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>Other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
 	<xs:complexType name="organizationIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Base type for identifier schemes for organizations</xs:documentation>
+			<xs:documentation>Base type for identifiers for organizations</xs:documentation>
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="organizationIdentifierSchemeName" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the organization identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:appinfo>
+							<label>Organization identifier scheme name</label>
+							<label-plural>Organization identifier scheme names</label-plural>
+							<userTip>For elements with controlled vocabularies: If the desired value is not included in the listed values, please use "other"</userTip>
+							<commentForSource>Values taken from DataCite (not formally encoded) and OpenAIRE</commentForSource>
+						</xs:appinfo>
+					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
-							<xs:enumeration value="isni"/>
-							<xs:enumeration value="fundref"/>
-							<xs:enumeration value="other"/>
+							<xs:enumeration value="ISNI">
+								<xs:annotation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
+									<xs:appinfo>
+										<label>ISNI (International Standard Name Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="GRID">
+								<xs:annotation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the GRID (Global Research Identifier Database, https://www.grid.ac/)</xs:documentation>
+									<xs:appinfo>
+										<label>GRID (Global Research Identifier Database)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="FundRef">
+								<xs:annotation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the CrossRef Funder ID (https://www.crossref.org/services/funder-registry/)</xs:documentation>
+									<xs:appinfo>
+										<label>CrossRef Funder ID</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="other">
+								<xs:annotation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:appinfo>
+										<label>other</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -548,8 +1130,16 @@
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
-				<xs:attribute name="projectIdentifierSchemeName" type="xs:string" use="required"/>
-				<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+				<xs:attribute name="projectIdentifierSchemeName" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>Specifies the name of the scheme according to which the project identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:appinfo>
+							<label>Project identifier scheme name</label>
+							<label-plural>Project identifier scheme names</label-plural>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute ref="ms:schemeURI" use="optional"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -562,14 +1152,21 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="relatedPerson" type="ms:relatedPersonType">
+			<xs:element name="relatedPerson" type="ms:personInfoType">
 				<xs:annotation>
 					<xs:appinfo>
 						<relation>one-to-one</relation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="relatedOrganization" type="ms:relatedOrganizationType">
+			<xs:element name="relatedGroup" type="ms:groupInfoType">
+				<xs:annotation>
+					<xs:appinfo>
+						<relation>one-to-one</relation>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relatedOrganization" type="ms:organizationInfoType">
 				<xs:annotation>
 					<xs:appinfo>
 						<relation>one-to-one</relation>
@@ -578,6 +1175,7 @@
 			</xs:element>
 		</xs:choice>
 	</xs:complexType>
+	<!--
 	<xs:complexType name="relatedPersonType">
 		<xs:annotation>
 			<xs:documentation>Base type for related persons; choice between person names and person identifiers</xs:documentation>
@@ -668,9 +1266,10 @@
 			</xs:element>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="relatedGroupType">
+-->
+	<xs:complexType name="groupInfoType">
 		<xs:annotation>
-			<xs:documentation>Base type for related groups; group name and choice between organization names and identifiers</xs:documentation>
+			<xs:documentation>Base type for groups; group name and affiliations</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="groupNames">
@@ -698,9 +1297,20 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="relatedOrganization" type="ms:relatedOrganizationType"/>
+			<xs:element name="affiliatedOrganization" type="ms:organizationInfoType">
+				<xs:annotation>
+					<xs:documentation>The organization to which the group is affiliated</xs:documentation>
+					<xs:appinfo>
+						<relation>one-to-one</relation>
+						<label>Affiliated organization</label>
+						<label-plural>Affiliated organizations</label-plural>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<!--
 	<xs:complexType name="relatedProjectType">
 		<xs:annotation>
 			<xs:documentation>Base type for related projects; choice between project names and identifiers</xs:documentation>
@@ -746,11 +1356,13 @@
 			</xs:element>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="relatedJournalType">
+-->
+	<!-- from relatedJournal; deprecated 
+	<xs:complexType name="journalInfoType">
 		<xs:annotation>
-			<xs:documentation>Base type for related journals; choice between journal titles and identifiers</xs:documentation>
+			<xs:documentation>Base type for related journals; journal titles and identifiers</xs:documentation>
 		</xs:annotation>
-		<xs:choice>
+		<xs:sequence>
 			<xs:element name="journalTitles">
 				<xs:complexType>
 					<xs:sequence>
@@ -789,13 +1401,84 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-		</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="relatedRepositoryType">
+-->
+	<xs:complexType name="journalInfoType">
 		<xs:annotation>
-			<xs:documentation>Base type for related repositories; choice between repository names and identifiers</xs:documentation>
+			<xs:documentation>Base type for journals</xs:documentation>
 		</xs:annotation>
-		<xs:choice>
+		<xs:sequence>
+			<xs:element name="journalTitles">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="journalTitle" minOccurs="1" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The full name of the journal</xs:documentation>
+								<xs:appinfo>
+									<label>Journal title</label>
+									<sameAs>dct:title</sameAs>
+									<sameAs>http://hdl.handle.net/11459/CCR_C-2545_d873f2ab-2a2f-29d6-a9ab-260cde57f227 (ccr:resourceTitle)</sameAs>
+									<sameAs>datacite:title</sameAs>
+								</xs:appinfo>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:restriction base="ms:myString">
+										<xs:maxLength value="500"/>
+									</xs:restriction>
+								</xs:simpleContent>
+							</xs:complexType>
+							<xs:unique name="uniqueLang222">
+								<xs:selector xpath="."/>
+								<xs:field xpath="@lang"/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="identifiers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:journalIdentifier" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="ms:publisher" minOccurs="0"/>
+			<xs:element name="languages" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="journalLanguage" type="ms:languageType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subjects" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:subject" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rights" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:rightsInfo" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="repositoryInfoType">
+		<xs:annotation>
+			<xs:documentation>Base type for repositories</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
 			<xs:element name="repositoryNames">
 				<xs:complexType>
 					<xs:sequence>
@@ -836,17 +1519,24 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-		</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="relatedResourceType">
 		<xs:annotation>
-			<xs:documentation>Base type for related resources; choice between resource names and identifiers</xs:documentation>
+			<xs:documentation>Base type for related resources; sequence of resource names and identifiers</xs:documentation>
 			<xs:appinfo>
 				<xs:label>Type for related resources</xs:label>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:choice>
-			<xs:element name="resourceIdentifiers">
+		<xs:sequence>
+			<xs:element name="resourceNames">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:resourceName" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="resourceIdentifiers" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="resourceIdentifier" type="ms:resourceIdentifierType" maxOccurs="unbounded">
@@ -859,22 +1549,28 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="resourceNames">
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="relatedDocumentInfoType">
+		<xs:annotation>
+			<xs:appinfo>
+				<tip>The preferred practice is to provide DOI's or URL links to the relevant documents in the "publicationIdentifier" or a bibtex record in the "unstructured document" field; in this way, automatic linking to the relevant information will be possible</tip>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="publicationIdentifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:resourceName" maxOccurs="unbounded"/>
+						<xs:element ref="ms:publicationIdentifier" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-		</xs:choice>
-	</xs:complexType>
-	<xs:complexType name="relatedDocumentInfoType">
-		<xs:choice>
 			<xs:element name="documentUnstructured">
 				<xs:annotation>
-					<xs:documentation>Used either as a free text description or as an unstructured (free form) presentation of a bibliographic record; alternative to the structured presentation of a document (cf. documentInfo)</xs:documentation>
+					<xs:documentation>Used to encode a bibliographic record, preferrably in the form of a bibtex record or as a free text description</xs:documentation>
 					<xs:appinfo>
 						<label>Unstructured document</label>
+						<label-plural>Unstructured documents</label-plural>
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
@@ -883,16 +1579,15 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="publicationIdentifiers">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:publicationIdentifier" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 		</xs:choice>
 	</xs:complexType>
 	<!-- definition of metadata header -->
+	<xs:complexType name="baseMetadataRecord">
+		<xs:sequence>
+			<xs:element name="metadataHeaderInfo" type="ms:metadataHeaderInfoType">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="metadataHeaderInfoType">
 		<xs:annotation>
 			<xs:documentation>Base type for metadata header</xs:documentation>
@@ -903,26 +1598,30 @@
 					<xs:documentation>A persistent identifier for the metadata record itself</xs:documentation>
 					<xs:appinfo>
 						<label>Metadata record identifier</label>
+						<usage>Irrespective of user input, this must be filled in automatically by the OMTD platform</usage>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="metadataCreationDate" type="xs:date">
 				<xs:annotation>
-					<xs:documentation>The date of creation of this metadata description (automatically inserted by the software)</xs:documentation>
+					<xs:documentation>The date of creation of this metadata description</xs:documentation>
 					<xs:appinfo>
 						<label>Metadata creation date</label>
+						<usage>Irrespective of user input, this must be filled in automatically by the OMTD platform</usage>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="metadataCreators" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="metadataCreator" type="ms:relatedPersonType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="metadataCreator" type="ms:personInfoType" minOccurs="0" maxOccurs="unbounded">
 							<xs:annotation>
 								<xs:documentation>Groups information on the person that has created the metadata record (for records manually edited)</xs:documentation>
 								<xs:appinfo>
 									<relation>many-to-many</relation>
 									<label>Metadata creator</label>
+									<usage>Until the user authentication system is integrated, use "John Foufoutos" as the default value</usage>
+									<usage_ugc>when the authentication system works, use for this the credentials of the person that made the query for creating the corpora</usage_ugc>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -938,7 +1637,7 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="collectedFrom" type="ms:relatedRepositoryType">
+						<xs:element name="collectedFrom" type="ms:repositoryInfoType">
 							<xs:annotation>
 								<xs:documentation>Refers to the entity (repository, aggregator etc.) from which the metadata record has been harvested</xs:documentation>
 								<xs:appinfo>
@@ -992,7 +1691,7 @@
 										</xs:simpleType>
 									</xs:element>
 									<xs:choice>
-										<xs:element name="originalDataProviderRepository" type="ms:relatedRepositoryType">
+										<xs:element name="originalDataProviderRepository" type="ms:repositoryInfoType">
 											<xs:annotation>
 												<xs:documentation>Information about the repository that has originally provided the metadata record</xs:documentation>
 												<xs:appinfo>
@@ -1000,7 +1699,7 @@
 												</xs:appinfo>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="originalDataProviderJournal" type="ms:relatedJournalType">
+										<xs:element name="originalDataProviderJournal" type="ms:journalInfoType">
 											<xs:annotation>
 												<xs:documentation>Information about the journal that has originally provided the metadata record</xs:documentation>
 												<xs:appinfo>
@@ -1008,7 +1707,7 @@
 												</xs:appinfo>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="originalDataProviderPublisher" type="ms:relatedOrganizationType">
+										<xs:element name="originalDataProviderPublisher" type="ms:organizationInfoType">
 											<xs:annotation>
 												<xs:documentation>Information about the publisher (organization) that has originally provided the metadata record</xs:documentation>
 												<xs:appinfo>
@@ -1028,9 +1727,12 @@
 					<xs:documentation>The query text that has created the corpus of scholarly publications</xs:documentation>
 					<xs:appinfo>
 						<label>User query</label>
+						<recommended>true</recommended>
+						<usage_ugc>Mandatory; must be filled in with the query used for creating the corpus</usage_ugc>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
+			<!--
 			<xs:element name="metadataLanguages" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -1045,11 +1747,13 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="metadataLastDateUpdated" type="xs:date">
+-->
+			<xs:element name="metadataLastDateUpdated" type="xs:date" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>The date of the last updating of the metadata record (automatically inserted by the system)</xs:documentation>
+					<xs:documentation>The date of the last updating of the metadata record</xs:documentation>
 					<xs:appinfo>
 						<label>Metadata last date updated</label>
+						<usage>Automatically inserted by the system</usage>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
@@ -1123,14 +1827,21 @@
 			<xs:documentation>Groups information on the metadata record itself</xs:documentation>
 			<xs:appinfo>
 				<label>Metadata header</label>
+				<usage>Do not show in the editor forms</usage>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="resourceName">
 		<xs:annotation>
-			<xs:documentation>The full name by which the resource is known; the element can be repeated for the different language versions using the "lang" attribute to specify the language</xs:documentation>
+			<xs:documentation>Specifies the name (full title) by which the resource is known</xs:documentation>
 			<xs:appinfo>
 				<xs:label>Resource name</xs:label>
+				<xs:label-plural>Resource names</xs:label-plural>
+				<!--
+				<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
+-->
+				<usage-ugc>To be created automatically with the following text: "OpenMinTeD subset of [CORE, OpenAIRE, ...] publications"</usage-ugc>
+				<change>true</change>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
@@ -1147,9 +1858,10 @@
 	</xs:element>
 	<xs:element name="organizationIdentifier" type="ms:organizationIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Reference to any kind of identifier used for an organization; the attribute should be used to specify the type of identifier (e.g. ORCID, LinkedIn etc.)</xs:documentation>
+			<xs:documentation>Associates an organizationto an identifier, i.e. a string used to uniquely identify it</xs:documentation>
 			<xs:appinfo>
 				<label>Organization identifier</label>
+				<label-plural>Organization identifiers</label-plural>
 				<sameAs>dct:identifier</sameAs>
 				<!-- we allow for all possible identifiers and not only persistent ones as in CCR -->
 				<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
@@ -1159,9 +1871,10 @@
 	</xs:element>
 	<xs:element name="personIdentifier" type="ms:personIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Reference to any kind of identifier used for a person; the attribute should be used to specify the type of identifier (e.g. ORCID, LinkedIn etc.)</xs:documentation>
+			<xs:documentation>Associates a person to an identifier (e.g. ORCID, LinkedIn etc.), i.e. a string used to uniquely identify it</xs:documentation>
 			<xs:appinfo>
 				<label>Person identifier</label>
+				<label-plural>Person identifiers</label-plural>
 				<sameAs>dct:identifier</sameAs>
 				<!-- we allow for all possible identifiers and not only persistent ones as in CCR -->
 				<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
@@ -1179,6 +1892,14 @@
 				<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
 				<!-- currently DataCite only supports DOI's -->
 				<narrowMatch>dataCite:identifier</narrowMatch>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="publisher" type="ms:organizationInfoType">
+		<xs:annotation>
+			<xs:documentation>Information about the publisher</xs:documentation>
+			<xs:appinfo>
+				<label>Publisher</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -1200,4 +1921,15 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
+	<xs:attribute name="schemeURI" type="xs:anyURI">
+		<xs:annotation>
+			<xs:documentation>Specifies the URI of the scheme according to which the resource identifier is assigned by the authority that issues it</xs:documentation>
+			<xs:appinfo>
+				<label>URI for scheme</label>
+				<label-plural>URI for schemes</label-plural>
+				<userTip>If the scheme name is not included in the listed values for resource or other identifiers, please use "other" and use the "schemeURI" attribute to provide a link to information about the scheme</userTip>
+				<conditions>Show in editor only if resourceIdentifierSchemeName=other or personIdentifierSchemeName=other</conditions>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:attribute>
 </xs:schema>
