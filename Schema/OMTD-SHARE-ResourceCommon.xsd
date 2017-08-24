@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.1" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.2" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
@@ -266,7 +266,7 @@
 		</xs:annotation>
 		<xs:sequence>
 			<xs:choice>
-				<xs:element name="version">
+				<xs:element name="version" type="xs:string">
 					<xs:annotation>
 						<xs:documentation>Associates a resource with a numeric pattern of the form major_version.minor_version.patch (in accordance to the semantic versioning guidelines, cf. http://semver.org) that identifies its version</xs:documentation>
 						<xs:appinfo>
@@ -278,12 +278,14 @@
 							<closeMatch>http://hdl.handle.net/11459/CCR_C-2547_7883d382-b3ce-8ab4-7052-0138525a8ba1 (ccr:version)</closeMatch>
 						</xs:appinfo>
 					</xs:annotation>
+<!--
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:maxLength value="100"/>
 							<xs:pattern value="[0-9]{1,2}(\.[0-9]{1,2}(\.[0-9]{1,3}))"/>
 						</xs:restriction>
 					</xs:simpleType>
+-->
 				</xs:element>
 				<xs:element name="versionDate">
 					<xs:annotation>
@@ -3556,7 +3558,13 @@
 					</xs:simpleType>
 				</xs:element>
 				<xs:element ref="ms:mimeType" minOccurs="0"/>
-				<xs:element name="fileExtension" type="xs:string" minOccurs="0"/>
+				<xs:element name="fileExtensions" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="fileExtension" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="dataFormatDescription" type="xs:string" minOccurs="0"/>
 				<xs:element name="documentationURL" type="xs:anyURI" minOccurs="0">
 					<xs:annotation>
@@ -3596,7 +3604,14 @@
 				<xs:enumeration value="text/xml">
 					<xs:annotation>
 						<xs:appinfo>
-							<label>XML</label>
+							<label>XML (text)</label>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="application/xml">
+					<xs:annotation>
+						<xs:appinfo>
+							<label>XML (application)</label>
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
@@ -3737,6 +3752,20 @@
 					<xs:annotation>
 						<xs:appinfo>
 							<label>Turtle</label>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="text/rtf">
+					<xs:annotation>
+						<xs:appinfo>
+							<label>RTF (Rich Text Format)</label>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="text/tcf+xml">
+					<xs:annotation>
+						<xs:appinfo>
+							<label>TCF (Text Corpus Format)</label>
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
