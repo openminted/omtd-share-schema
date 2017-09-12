@@ -11,10 +11,10 @@
 				<xs:element ref="ms:distributionMedium"/>
 				<xs:element ref="ms:distributionLocation" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is "downloadable" and you have not uploaded the resource in the repository</xs:documentation>
+						<xs:documentation>Any location where the resource can be downloaded from; please, use if the resource is "downloadable" and you have not uploaded the resource in the repository</xs:documentation>
 						<xs:appinfo>
 							<relation>one-to-many</relation>
-							<label>Distribution URL</label>
+							<label>Distribution location</label>
 							<broader>dcat:downloadURL</broader>
 						</xs:appinfo>
 					</xs:annotation>
@@ -1211,7 +1211,7 @@
 			<xs:documentation>Groups information on the distribution of a dataset resource (multiple files)</xs:documentation>
 			<xs:appinfo>
 				<relation>one-to-many</relation>
-				<label>Document distribution</label>
+				<label>Dataset distribution</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -1220,7 +1220,7 @@
 			<xs:documentation>Groups information on the distributable form of a component (e.g. as a software code, an executable programme, a web service etc.)</xs:documentation>
 			<xs:appinfo>
 				<relation>one-to-many</relation>
-				<label>Document distribution</label>
+				<label>Component distribution</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
