@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.2" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd"/>
 	<xs:complexType name="languageDescriptionInfoType">
@@ -102,6 +101,8 @@
 							</xs:annotation>
 						</xs:element>
 						<xs:element ref="ms:annotationSchema" minOccurs="0"/>
+						<xs:element ref="ms:annotationResource" minOccurs="0"/>
+						<xs:element name="tagset" type="ms:relatedResourceType" minOccurs="0"/>
 						<xs:element ref="ms:TDMMethod" minOccurs="0"/>
 						<xs:element name="algorithm" type="xs:string" minOccurs="0">
 							<xs:annotation>
@@ -411,6 +412,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="dataFormatInfo" type="ms:dataFormatType"/>
+			<xs:element ref="ms:characterEncoding" minOccurs="0"/>
 			<xs:element name="sizes" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -427,23 +430,42 @@
 			<xs:element name="domains" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:domainInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="timeClassifications" minOccurs="0">
+			<xs:element name="keywords" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:timeCoverageInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:keyword" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="geographicClassifications" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:geographicCoverageInfo" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
+			<xs:element name="timeCoverage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The time period that the content of a resource is about</xs:documentation>
+					<xs:appinfo>
+						<label>Time coverage</label>
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="geographicCoverage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The geographic region that the content of a resource is about; for countries, recommended use of ISO-3166</xs:documentation>
+					<xs:appinfo>
+						<label>Geographic coverage</label>
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element ref="ms:creationInfo" minOccurs="0"/>
 		</xs:sequence>

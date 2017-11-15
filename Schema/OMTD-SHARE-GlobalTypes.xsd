@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.2" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd"/>
@@ -265,9 +264,8 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:positiveInteger">
-						<xs:totalDigits value="2"/>
-						<xs:minExclusive value="01"/>
-						<xs:maxExclusive value="31"/>
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="31"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -280,9 +278,8 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:positiveInteger">
-						<xs:minExclusive value="01"/>
-						<xs:maxExclusive value="12"/>
-						<xs:totalDigits value="2"/>
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="12"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -295,9 +292,9 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:positiveInteger">
-						<xs:minExclusive value="1400"/>
-						<xs:maxExclusive value="2100"/>
 						<xs:totalDigits value="4"/>
+						<xs:minInclusive value="1400"/>
+						<xs:maxInclusive value="2100"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -321,6 +318,15 @@
 			<xs:element ref="ms:dateRange"/>
 		</xs:choice>
 	</xs:complexType>
+	<xs:element name="languageId" type="ms:languageIdType">
+		<xs:annotation>
+			<xs:documentation>The identifier of the language subelement according to the IETF BCP47 guidelines (i.e. ISO 639-3 codes when existing supplemented with ISO 639-3 codes for new entries)</xs:documentation>
+			<xs:appinfo>
+				<label>Language identifier</label>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<!--
 	<xs:complexType name="languageType">
 		<xs:annotation>
 			<xs:documentation>The container for the language elements (i.e. identifier according to BCP47 guidelines and all the elements that produce this id)</xs:documentation>
@@ -377,6 +383,7 @@
 			</xs:sequence>
 		</xs:sequence>
 	</xs:complexType>
+-->
 	<!-- definition of identifier types -->
 	<xs:complexType name="metadataIdentifierType">
 		<xs:annotation>
@@ -428,6 +435,8 @@
 								</xs:annotation>
 							</xs:enumeration>
 							<xs:enumeration value="OMTD"/>
+							<xs:enumeration value="OpenAIRE"/>
+							<xs:enumeration value="CORE"/>
 							<xs:enumeration value="other">
 								<xs:annotation>
 									<xs:documentation>Value for metadataIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
@@ -639,6 +648,7 @@
 									</xs:appinfo>
 								</xs:annotation>
 							</xs:enumeration>
+							<xs:enumeration value="OMTD-docker"/>
 							<xs:enumeration value="OMTD">
 								<xs:annotation>
 									<xs:documentation>Value for resourceIdentifierSchemeName, referring to OpenMinTeD (http://www.openminted.eu)</xs:documentation>
@@ -844,6 +854,22 @@
 									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
 									<xs:appinfo>
 										<label>PMID (PubMed Identifier)</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OpenAIRE">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the OpenAIRE identifier (www.openaire.eu)</xs:documentation>
+									<xs:appinfo>
+										<label>OpenAIRE Identifier</label>
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="CORE">
+								<xs:annotation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the CORE identifier (core.ac.uk)</xs:documentation>
+									<xs:appinfo>
+										<label>CORE Identifier</label>
 									</xs:appinfo>
 								</xs:annotation>
 							</xs:enumeration>
@@ -1464,7 +1490,7 @@
 			<xs:element name="languages" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="journalLanguage" type="ms:languageType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="journalLanguage" type="ms:languageIdType" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -1567,14 +1593,7 @@
 				<tip>The preferred practice is to provide DOI's or URL links to the relevant documents in the "publicationIdentifier" or a bibtex record in the "unstructured document" field; in this way, automatic linking to the relevant information will be possible</tip>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:choice>
-			<xs:element name="publicationIdentifiers">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:publicationIdentifier" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+		<xs:sequence>
 			<xs:element name="documentUnstructured">
 				<xs:annotation>
 					<xs:documentation>Used to encode a bibliographic record, preferrably in the form of a bibtex record or as a free text description</xs:documentation>
@@ -1589,7 +1608,14 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-		</xs:choice>
+			<xs:element name="publicationIdentifiers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:publicationIdentifier" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 	</xs:complexType>
 	<!-- definition of metadata header -->
 	<xs:complexType name="baseMetadataRecord">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.2" xml:lang="en">
+<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<!-- definition of complex types -->
@@ -13,105 +13,37 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:choice>
-				<xs:sequence>
-					<xs:element name="separateNames">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="surnames">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:element name="surname" maxOccurs="unbounded">
-												<xs:annotation>
-													<xs:documentation>The surname (family name) of a person</xs:documentation>
-													<xs:appinfo>
-														<relation>one-to-many</relation>
-														<label>Surname</label>
-														<label-plural>Surnames</label-plural>
-														<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
-														<sameAs>foaf:familyName</sameAs>
-													</xs:appinfo>
-												</xs:annotation>
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:restriction base="ms:myString">
-															<xs:maxLength value="100"/>
-														</xs:restriction>
-													</xs:simpleContent>
-												</xs:complexType>
-												<xs:unique name="uniqueLang7">
-													<xs:selector xpath="."/>
-													<xs:field xpath="@lang"/>
-												</xs:unique>
-											</xs:element>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="givenNames" minOccurs="0">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:element name="givenName" minOccurs="0" maxOccurs="unbounded">
-												<xs:annotation>
-													<xs:documentation>The given name (first name) of a person; initials can also be used</xs:documentation>
-													<xs:appinfo>
-														<recommended>true</recommended>
-														<relation>one-to-many</relation>
-														<label>Given name</label>
-														<label-plural>Given name</label-plural>
-														<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
-														<sameAs>foaf:givenName</sameAs>
-													</xs:appinfo>
-												</xs:annotation>
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:restriction base="ms:myString">
-															<xs:maxLength value="100"/>
-														</xs:restriction>
-													</xs:simpleContent>
-												</xs:complexType>
-												<xs:unique name="uniqueLang6">
-													<xs:selector xpath="."/>
-													<xs:field xpath="@lang"/>
-												</xs:unique>
-											</xs:element>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>
-				<xs:element name="names">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="name" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>The full name of a person; the preferred format is "family name, given name"</xs:documentation>
-									<xs:appinfo>
-										<relation>one-to-many</relation>
-										<label>Name</label>
-										<label-plural>Names</label-plural>
-										<sameAs>foaf:name</sameAs>
-										<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
-									</xs:appinfo>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:simpleContent>
-										<xs:restriction base="ms:myString">
-											<xs:maxLength value="100"/>
-											<xs:attribute name="lang" type="xs:language"/>
-										</xs:restriction>
-									</xs:simpleContent>
-								</xs:complexType>
-								<xs:unique name="uniqueLang123">
-									<xs:selector xpath="."/>
-									<xs:field xpath="@lang"/>
-								</xs:unique>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:choice>
+			<xs:element name="separateNames">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="surname" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>The surname (family name) of a person</xs:documentation>
+								<xs:appinfo>
+									<relation>one-to-many</relation>
+									<label>Surname</label>
+									<label-plural>Surnames</label-plural>
+									<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
+									<sameAs>foaf:familyName</sameAs>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="givenName" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The given name (first name) of a person; initials can also be used</xs:documentation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+									<relation>one-to-many</relation>
+									<label>Given name</label>
+									<label-plural>Given name</label-plural>
+									<xs:userTip>For multilingual elements: you can repeat the element for the different language versions using the "lang" attribute to specify the language</xs:userTip>
+									<sameAs>foaf:givenName</sameAs>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="personIdentifiers" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -125,6 +57,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<!--
 			<xs:element ref="ms:sex" minOccurs="0">
 				<xs:annotation>
 					<xs:appinfo>
@@ -132,6 +65,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
+-->
 			<xs:element ref="ms:communicationInfo" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Groups information on the communication details of a person, group or organization</xs:documentation>
@@ -141,50 +75,45 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="affiliations" minOccurs="0">
+			<xs:element name="affiliatedOrgText" type="xs:string" minOccurs="0"/>
+			<xs:element name="affiliation" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Groups information on the organization to whom a person is affiliated</xs:documentation>
+					<xs:appinfo>
+						<relation>many-to-many</relation>
+						<label>Affiliation</label>
+						<label-plural>Affiliations</label-plural>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="affiliation" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="position" minOccurs="0">
 							<xs:annotation>
-								<xs:documentation>Groups information on the organization to whom a person is affiliated</xs:documentation>
+								<xs:documentation>The position or the title of a person if affiliated to an organization</xs:documentation>
 								<xs:appinfo>
-									<relation>many-to-many</relation>
-									<label>Affiliation</label>
-									<label-plural>Affiliations</label-plural>
+									<relation>one-to-one</relation>
+									<label>Position</label>
+									<label-plural>Positions</label-plural>
 									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
-							<xs:complexType>
-								<xs:sequence>
-									<xs:element name="position" minOccurs="0">
-										<xs:annotation>
-											<xs:documentation>The position or the title of a person if affiliated to an organization</xs:documentation>
-											<xs:appinfo>
-												<relation>one-to-one</relation>
-												<label>Position</label>
-												<label-plural>Positions</label-plural>
-												<recommended>true</recommended>
-											</xs:appinfo>
-										</xs:annotation>
-										<xs:simpleType>
-											<xs:restriction base="xs:string">
-												<xs:maxLength value="100"/>
-											</xs:restriction>
-										</xs:simpleType>
-									</xs:element>
-									<xs:element name="affiliatedOrganization" type="ms:organizationInfoType">
-										<xs:annotation>
-											<xs:documentation>The organization to which a person is affiliated</xs:documentation>
-											<xs:appinfo>
-												<relation>one-to-one</relation>
-												<label>Affiliated organization</label>
-												<label-plural>Affiliated organizations</label-plural>
-												<recommended>true</recommended>
-											</xs:appinfo>
-										</xs:annotation>
-									</xs:element>
-								</xs:sequence>
-							</xs:complexType>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="100"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="affiliatedOrganization" type="ms:organizationInfoType">
+							<xs:annotation>
+								<xs:documentation>The organization to which a person is affiliated</xs:documentation>
+								<xs:appinfo>
+									<relation>one-to-one</relation>
+									<label>Affiliated organization</label>
+									<label-plural>Affiliated organizations</label-plural>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
@@ -327,28 +256,6 @@
 									<label>Telephone number</label>
 									<label-plural>Telephone numbers</label-plural>
 									<sameAs>foaf:phone</sameAs>
-								</xs:appinfo>
-							</xs:annotation>
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="faxNumbers" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="faxNumber" minOccurs="0" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>The fax number of a person or an organization; recommended format: +_international code_city code_number</xs:documentation>
-								<xs:appinfo>
-									<relation>one-to-many</relation>
-									<label>Fax number</label>
-									<label-plural>Fax numbers</label-plural>
-									<broadMatch>foaf:phone</broadMatch>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
