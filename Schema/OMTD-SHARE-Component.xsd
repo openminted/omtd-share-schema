@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
 <xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd"/>
@@ -942,19 +943,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="annotationTypes" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:annotationType" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="annotationTypeOther" type="xs:string" minOccurs="0"/>
-					</xs:sequence>
-				</xs:complexType>
+			<xs:element ref="ms:annotationTypes" minOccurs="0">
 			</xs:element>
 			<xs:element ref="ms:typesystem" minOccurs="0">
 				<xs:annotation>
@@ -987,26 +976,6 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element ref="ms:samplesLocation" minOccurs="0"/>
-			<xs:element name="domains" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="keywords" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:keyword" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<!--
 			<xs:element name="textGenres" minOccurs="0">
 				<xs:complexType>

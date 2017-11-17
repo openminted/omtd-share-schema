@@ -734,6 +734,7 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element ref="ms:annotationType" maxOccurs="unbounded"/>
+						<xs:element name="annotationTypeOther" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -2922,4 +2923,19 @@
 	</xs:element>
 -->
 	<xs:element name="applicationOther" type="xs:string"/>
+			<xs:element name="annotationTypes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:annotationType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="annotationTypeOther" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
 </xs:schema>
