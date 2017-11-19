@@ -127,11 +127,11 @@
 			<xs:element ref="ms:distributionLocation"/>
 			<xs:element name="command" type="xs:string" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>A command line used for the execution of a component</xs:documentation>
+					<xs:documentation>A command line used to invoke a component</xs:documentation>
 					<xs:appinfo>
 						<relation>one-to-many</relation>
 						<label>Command</label>
-						<usage>To show if componentDistributionForm=webService</usage>
+						<usage>To show if componentDistributionForm=dockerImage</usage>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
