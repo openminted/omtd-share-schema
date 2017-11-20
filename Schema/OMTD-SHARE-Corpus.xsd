@@ -295,7 +295,7 @@
 			<xs:element name="dataFormats" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:dataFormatInfo" maxOccurs="unbounded"/>
+						<xs:element ref="ms:dataFormatInfo" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
