@@ -734,8 +734,7 @@
 			<xs:element name="annotationTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:annotationType" maxOccurs="unbounded"/>
-						<xs:element name="annotationTypeOther" type="xs:string" minOccurs="0"/>
+						<xs:element ref="ms:annotationTypeInfo" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -2183,15 +2182,6 @@
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
-	<xs:element name="annotationType" type="ms:annotationTypeType">
-		<xs:annotation>
-			<xs:documentation>Specifies the annotation type of the resource or what a s/w component consumes or produces as an output</xs:documentation>
-			<xs:appinfo>
-				<label>Annotation type</label>
-				<label-plural>Annotation types</label-plural>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
 	<!--
 	<xs:element name="annotationLevel">
 		<xs:annotation>
@@ -2310,7 +2300,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="dataFormat" type="ms:dataFormatType" maxOccurs="unbounded"/>
+				<xs:element name="dataFormat" type="ms:dataFormatType"/>
 				<xs:element name="dataFormatOther" type="xs:string" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -2773,13 +2763,15 @@
 	</xs:element>
 -->
 	<xs:element name="applicationOther" type="xs:string"/>
-	<xs:element name="annotationTypes">
+	<xs:element name="annotationTypeInfo">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ms:annotationType" maxOccurs="unbounded">
+				<xs:element name="annotationType" type="ms:annotationTypeType">
 					<xs:annotation>
+						<xs:documentation>Specifies the annotation type of the resource or what a s/w component consumes or produces as an output</xs:documentation>
 						<xs:appinfo>
-							<recommended>true</recommended>
+							<label>Annotation type</label>
+							<label-plural>Annotation types</label-plural>
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:element>
