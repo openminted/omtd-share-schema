@@ -35,12 +35,18 @@
 			<xs:element ref="ms:identificationInfo"/>
 			<xs:element ref="ms:versionInfo"/>
 			<xs:element ref="ms:contactInfo"/>
-			<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0">
-				<xs:annotation>
-					<xs:appinfo>
-						<recommended>true</recommended>
-					</xs:appinfo>
-				</xs:annotation>
+			<xs:element name="resourceDocumentations" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
 			</xs:element>
 			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
 			<xs:element name="validationInfos" minOccurs="0">
