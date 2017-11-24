@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿Type ur fucking name ! (Type ur Company -.-) -->
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
 <xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
@@ -310,6 +310,25 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
+			<!-- 
+			<xs:element name="version" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The version of the licence; the preferred options are "4.0" for all CC-licences and "2.0" for the META-SHARE-NoReD ones</xs:documentation>
+					<xs:appinfo>
+						<relation>one-to-one</relation>
+						<label>Version</label>
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1.0.0"/>
+						<xs:enumeration value="2.0"/>
+						<xs:enumeration value="3.0"/>
+						<xs:enumeration value="4.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+-->
 			<xs:element name="licence">
 				<xs:annotation>
 					<xs:documentation>The licence of use for the resource</xs:documentation>
@@ -607,7 +626,7 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
-						<xs:enumeration value="notAvailable">
+						<xs:enumeration value="openAccessUnspecified">
 							<xs:annotation>
 								<xs:documentation>Value for "licence"; to be used for resources that are distributed with open access rights but for which the licence has not been identified or further specified (from trusted sources such as OpenAIRE and CORE)</xs:documentation>
 								<xs:appinfo>
@@ -623,53 +642,10 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
-						<!--
-						<xs:enumeration value="MS-NoReD"/>
-						<xs:enumeration value="MS-NoReD-FF"/>
-						<xs:enumeration value="MS-NoReD-ND"/>
-						<xs:enumeration value="MS-NoReD-ND-FF"/>
-						<xs:enumeration value="MS-NC-NoReD"/>
-						<xs:enumeration value="MS-NC-NoReD-FF"/>
-						<xs:enumeration value="MS-NC-NoReD-ND"/>
-						<xs:enumeration value="MS-NC-NoReD-ND-FF"/>
-						<xs:enumeration value="ELRA_END_USER"/>
-						<xs:enumeration value="ELRA_EVALUATION"/>
-						<xs:enumeration value="ELRA_VAR"/>
-						<xs:enumeration value="CLARIN_PUB"/>
-						<xs:enumeration value="CLARIN_ACA"/>
-						<xs:enumeration value="CLARIN_ACA-NC"/>
-						<xs:enumeration value="CLARIN_RES"/>
--->
-						<!--
-						<xs:enumeration value="MSCommons-BY"/>
-						<xs:enumeration value="MSCommons-BY-NC"/>
-						<xs:enumeration value="MSCommons-BY-NC-ND"/>
-						<xs:enumeration value="MSCommons-BY-NC-SA"/>
-						<xs:enumeration value="MSCommons-BY-ND"/>
-						<xs:enumeration value="MSCommons-BY-SA"/>
--->
+						<xs:enumeration value="restrictedAccessUnspecified"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<!-- 
-			<xs:element name="version" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The version of the licence; the preferred options are "4.0" for all CC-licences and "2.0" for the META-SHARE-NoReD ones</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-one</relation>
-						<label>Version</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="1.0.0"/>
-						<xs:enumeration value="2.0"/>
-						<xs:enumeration value="3.0"/>
-						<xs:enumeration value="4.0"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
--->
 			<xs:element name="nonStandardLicenceName" type="xs:string" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The name with which a licence is known; to be used for licences not included in the pre-defined list of licences</xs:documentation>
@@ -922,7 +898,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:choice>
+			<xs:sequence>
 				<xs:element name="licenceInfos">
 					<xs:complexType>
 						<xs:sequence>
@@ -991,7 +967,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-			</xs:choice>
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<!-- definition of elements -->
