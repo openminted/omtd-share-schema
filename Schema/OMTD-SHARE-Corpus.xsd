@@ -32,7 +32,13 @@
 			<xs:element name="resourceDocumentations" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -54,7 +60,13 @@
 			<xs:element name="relations" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:relationInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:relationInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<usage>Automatically added for annotated corpora</usage>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -151,7 +163,6 @@
 							<xs:annotation>
 								<xs:documentation>Groups together information on character encoding of the resource</xs:documentation>
 								<xs:appinfo>
-									<recommended>true</recommended>
 									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Character encoding</label>
@@ -170,6 +181,7 @@
 								<xs:appinfo>
 									<relation>one-to-many</relation>
 									<label>Text classification</label>
+									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -301,7 +313,13 @@
 			<xs:element name="dataFormats" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:dataFormatInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:dataFormatInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -320,6 +338,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups together information on text type/genre of the resource</xs:documentation>
 								<xs:appinfo>
+									<recommended>true</recommended>
 									<relation>one-to-many</relation>
 									<label>Text classification</label>
 								</xs:appinfo>
@@ -409,6 +428,7 @@
 -->
 		</xs:sequence>
 	</xs:complexType>
+	<!--
 	<xs:complexType name="annotationsInfoType">
 		<xs:sequence>
 			<xs:element name="corpusSubtype" type="xs:string" fixed="annotations"/>
@@ -416,6 +436,7 @@
 			<xs:element ref="ms:annotationInfo"/>
 		</xs:sequence>
 	</xs:complexType>
+-->
 	<!-- definition of elements -->
 	<xs:element name="corpusMetadataRecord">
 		<xs:annotation>
@@ -465,6 +486,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
+	<!--
 	<xs:element name="annotationsInfo" type="ms:annotationsInfoType">
 		<xs:annotation>
 			<xs:documentation>Groups together information on annotations</xs:documentation>
@@ -473,4 +495,5 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
+-->
 </xs:schema>
