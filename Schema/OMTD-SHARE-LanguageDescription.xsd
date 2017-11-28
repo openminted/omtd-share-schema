@@ -28,6 +28,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element ref="ms:rightsInfo"/>
 			<xs:element name="resourceDocumentations" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -41,7 +42,13 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
+			<xs:element ref="ms:resourceCreationInfo" minOccurs="0">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+			</xs:element>
 			<xs:element name="validationInfos" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -103,6 +110,7 @@
 								<xs:documentation>variant name used for the model</xs:documentation>
 								<xs:appinfo>
 									<xs:label>Variant name</xs:label>
+									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -113,15 +121,34 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
-						<xs:element ref="ms:annotationSchema" minOccurs="0"/>
-						<xs:element ref="ms:annotationResource" minOccurs="0"/>
+						<xs:element ref="ms:annotationSchema" minOccurs="0">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="ms:annotationResource" minOccurs="0">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 						<xs:element name="tagset" type="ms:relatedResourceType" minOccurs="0"/>
-						<xs:element ref="ms:TDMMethod" minOccurs="0"/>
+						<xs:element ref="ms:TDMMethod" minOccurs="0">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 						<xs:element name="algorithm" type="xs:string" minOccurs="0">
 							<xs:annotation>
 								<xs:documentation>Training algorithm used for the model (e.g. maximum entropy, svm etc.)</xs:documentation>
 								<xs:appinfo>
 									<xs:label>Algorithm</xs:label>
+									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -138,6 +165,7 @@
 								<xs:documentation>Detailed description of the training corpus (e.g. size, number of features etc.)</xs:documentation>
 								<xs:appinfo>
 									<xs:label>Training corpus details</xs:label>
+									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -405,7 +433,13 @@
 			<xs:element name="metalanguages" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:metalanguageInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:metalanguageInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -427,7 +461,13 @@
 			<xs:element name="domains" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
