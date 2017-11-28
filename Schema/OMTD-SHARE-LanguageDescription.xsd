@@ -21,6 +21,27 @@
 			<xs:element ref="ms:identificationInfo"/>
 			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
 			<xs:element ref="ms:versionInfo" maxOccurs="1"/>
+			<xs:element name="distributionInfos">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:datasetDistributionInfo" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="resourceDocumentations" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
 			<xs:element name="validationInfos" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -29,27 +50,6 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element ref="ms:usageInfo" minOccurs="0"/>
-			<xs:element name="resourceDocumentations" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
-				<xs:annotation>
-					<xs:appinfo>
-						<recommended>true</recommended>
-					</xs:appinfo>
-				</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
-			<xs:element name="distributionInfos">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:datasetDistributionInfo" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="languageDescriptionType">
 				<xs:annotation>
 					<xs:documentation>The type of the language description</xs:documentation>
@@ -160,23 +160,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="languageDescriptionMediaType">
-				<xs:annotation>
-					<xs:documentation>Groups information on the media type-specific components for language descriptions</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-one</relation>
-						<label>Media type component of language description</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:languageDescriptionTextInfo"/>
-						<!--<xs:element ref="ms:languageDescriptionAudioInfo"/>
-                            <xs:element ref="ms:languageDescriptionTextNumericalInfo"/>
-    -						-->
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:element ref="ms:languageDescriptionTextInfo"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="languageDescriptionEncodingInfoType">
@@ -425,8 +409,6 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:dataFormatInfo"/>
-			<xs:element ref="ms:characterEncoding" minOccurs="0"/>
 			<xs:element name="sizes" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -440,6 +422,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element ref="ms:dataFormatInfo"/>
+			<xs:element ref="ms:characterEncoding" minOccurs="0"/>
 			<xs:element name="domains" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>

@@ -48,7 +48,13 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
+			<xs:element ref="ms:resourceCreationInfo" minOccurs="0">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+			</xs:element>
 			<xs:element name="validationInfos" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>

@@ -21,28 +21,6 @@
 			<xs:element ref="ms:identificationInfo"/>
 			<xs:element ref="ms:versionInfo"/>
 			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
-			<xs:element name="validationInfos" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:validationInfo" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element ref="ms:usageInfo" minOccurs="0"/>
-			<xs:element name="resourceDocumentations" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
@@ -57,6 +35,34 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="resourceDocumentations" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="ms:resourceCreationInfo" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validationInfos" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:validationInfo" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="ms:usageInfo" minOccurs="0"/>
 			<xs:element name="relations" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -71,6 +77,12 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="corpusSubtypeSpecificInfo">
+				<xs:annotation>
+					<xs:documentation>Groups together all information related to raw corpora</xs:documentation>
+					<xs:appinfo>
+						<xs:usage>The user must select at the beginning of the process whether they wish to upload a raw or annotated corpus</xs:usage>
+					</xs:appinfo>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:choice>
 						<xs:element ref="ms:rawCorpusInfo" minOccurs="1"/>

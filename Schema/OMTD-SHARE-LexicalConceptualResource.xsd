@@ -19,8 +19,8 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element ref="ms:identificationInfo"/>
-			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
 			<xs:element ref="ms:versionInfo"/>
+			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
@@ -28,14 +28,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="validationInfos" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:validationInfo" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element ref="ms:usageInfo" minOccurs="0"/>
+			<xs:element ref="ms:rightsInfo"/>
 			<xs:element name="resourceDocumentations" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -44,6 +37,14 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
+			<xs:element name="validationInfos" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:validationInfo" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="ms:usageInfo" minOccurs="0"/>
 			<xs:element name="lexicalConceptualResourceType">
 				<xs:annotation>
 					<xs:documentation>Specifies the subtype of lexicalConceptualResource</xs:documentation>
@@ -183,20 +184,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="lexicalConceptualResourceMediaType">
-				<xs:annotation>
-					<xs:documentation>Restriction of mediaType for lexicalConceptualResources</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-one</relation>
-						<label>Media type component of lexical / conceptual resource</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:lexicalConceptualResourceTextInfo"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:element ref="ms:lexicalConceptualResourceTextInfo"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="lexicalConceptualResourceEncodingInfoType">
@@ -208,7 +196,6 @@
 					<xs:documentation>A more detailed account of the information contained in the lexicalConceptualResource</xs:documentation>
 					<xs:appinfo>
 						<label>Linguistic information</label>
-						<recommended>true</recommended>
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
@@ -353,7 +340,13 @@
 			<xs:element name="metalanguages" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:metalanguageInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:metalanguageInfo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -369,7 +362,13 @@
 			<xs:element name="sizes" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:sizeInfo" maxOccurs="unbounded"/>
+						<xs:element ref="ms:sizeInfo" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -378,7 +377,13 @@
 			<xs:element name="domains" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
