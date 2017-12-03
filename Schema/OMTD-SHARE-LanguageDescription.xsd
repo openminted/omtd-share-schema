@@ -128,14 +128,26 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
-						<xs:element ref="ms:annotationResource" minOccurs="0">
-							<xs:annotation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-								</xs:appinfo>
-							</xs:annotation>
+						<xs:element name="annotationResources" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="ms:annotationResource" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:appinfo>
+												<recommended>true</recommended>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
 						</xs:element>
-						<xs:element name="tagset" type="ms:relatedResourceType" minOccurs="0"/>
+						<xs:element name="tagsets" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="tagset" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
 						<xs:element ref="ms:TDMMethod" minOccurs="0">
 							<xs:annotation>
 								<xs:appinfo>
