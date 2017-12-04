@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿Type ur fucking name ! (Type ur Company -.-) -->
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿pl (pl) -->
 <xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0" xml:lang="en">
 	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
@@ -286,10 +286,28 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="textFormats" minOccurs="0">
+						<xs:element name="sizes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:textFormatInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ms:sizeInfo" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Groups information on the size of the resource or of resource parts</xs:documentation>
+								<xs:appinfo>
+									<relation>one-to-many</relation>
+									<inline-type>tabular</inline-type>
+									<label>Size</label>
+									<recommended>true</recommended>
+									<usage-ugc>To be created automatically by the system using [number] with [file]</usage-ugc>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="textFormats">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ms:textFormatInfo" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>

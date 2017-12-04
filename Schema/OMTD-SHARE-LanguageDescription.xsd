@@ -455,6 +455,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<!--
 			<xs:element name="sizes" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -470,6 +471,7 @@
 			</xs:element>
 			<xs:element ref="ms:dataFormatInfo"/>
 			<xs:element ref="ms:characterEncoding" minOccurs="0"/>
+-->
 			<xs:element name="domains" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
